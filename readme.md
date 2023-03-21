@@ -1,8 +1,10 @@
+In Development
+
 # Budget App
-Basic Budget App web application that utilizes local storage
+Basic Budget App web application that utilizes MongoDB
 
 
-**Tech used:** HTML, CSS, JavaScript, React
+**Tech used:** HTML, CSS, JavaScript, React, Node, MongoDB
 
 
 ## Optimizations
