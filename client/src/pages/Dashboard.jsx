@@ -1,5 +1,5 @@
 // rrd imports
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, Navigate, useLoaderData } from "react-router-dom";
 
 // library imports
 import { toast } from "react-toastify";
@@ -13,6 +13,8 @@ import Table from "../components/Table";
 
 //  helper functions
 import { createBudget, createExpense, deleteItem, fetchData, waait } from "../helpers"
+import { UserContext } from "../components/UserContext";
+import { useContext, useState } from "react";
 
 
 // loader
@@ -79,14 +81,42 @@ export async function dashboardAction({ request }) {
 }
 
 
+
 const Dashboard = () => {
   const { userName, budgets, expenses } = useLoaderData()
+  const {ready,user,setUser} = useContext(UserContext);
+  const [redirect,setRedirect] = useState(null);
+
+  async function logout() {
+    await axios.post('/logout');
+    setRedirect('/');
+    setUser(null);
+  }
+  
+
+  if (!ready) {
+    return 'Loading...';
+  }
+  
+  if (ready && !user && !redirect) {
+    return <Navigate to={'/'} />
+  }
+  
+  if (redirect) {
+    return <Navigate to={'/'} />
+  }
 
   return (
     <>
       {
         <div className="dashboard">
-          <h1>Welcome back, <span className="accent">{userName}</span></h1>
+          <h1>Welcome back, <span className="accent">
+            {!!user && (
+              <div>
+            {user.name}    
+              </div>
+          )}
+          </span></h1>
           <div className="grid-sm">
             {
               budgets && budgets.length > 0

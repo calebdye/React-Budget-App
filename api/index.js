@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:5173',
+  origin: 'http://127.0.0.1:5173',
 }));
 
 
@@ -57,9 +57,12 @@ console.log(req.body)
 });
 
 app.post('/login', async (req,res) => {
+  console.log(req.body);
+  console.log(res)
   mongoose.connect(process.env.MONGO_URL);
   const {email,password} = req.body;
   const userDoc = await User.findOne({email});
+  console.log(userDoc)
   if (userDoc) {
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if (passOk) {
@@ -74,12 +77,26 @@ app.post('/login', async (req,res) => {
       res.status(422).json('pass not ok');
     }
   } else {
-    res.json('not found');
+    res.status(404).json('not found');
   }
 });
 
 app.post('/api/logout', (req,res) => {
   res.cookie('token', '').json(true);
+});
+
+app.get('/profile', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {name,email,_id} = await User.findById(userData.id);
+      res.json({name,email,_id});
+    });
+  } else {
+    res.json(null);
+  }
 });
 
 

@@ -22,9 +22,10 @@ import BudgetPage, { budgetAction, budgetLoader } from "./pages/BudgetPage";
 import RegisterPage from "./pages/Register";
 import axios from "axios";
 import Intro from "./components/Intro";
+import { UserContextProvider } from "./components/UserContext";
 
-axios.defaults.baseURL = "http://localhost:4000"
-// axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://127.0.0.1:4000"
+axios.defaults.withCredentials = true;
 
 
 const router = createBrowserRouter([
@@ -35,14 +36,14 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        path:"login",
+        index: true,        
         element: <Intro/>,
         // loader: dashboardLoader,
         // action: dashboardAction,
         errorElement: <Error />
       },      
       {
-        index: true,
+        path:"Dashboard",
         element: <Dashboard />,
         loader: dashboardLoader,
         action: dashboardAction,
@@ -83,8 +84,10 @@ const router = createBrowserRouter([
 
 function App() {
   return <div className="App">
+    <UserContextProvider>
     <RouterProvider router={router} />
     <ToastContainer />
+    </UserContextProvider>
   </div>;
 }
 

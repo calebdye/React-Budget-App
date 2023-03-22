@@ -1,6 +1,6 @@
 import {useContext, useState} from "react";
 import axios from "axios";
-// import {UserContext} from "../UserContext.jsx";
+
 
 import { Form, Link, Navigate } from "react-router-dom"
 
@@ -9,18 +9,20 @@ import { UserPlusIcon } from "@heroicons/react/24/solid";
 
 // assets
 import illustration from "../assets/illustration.jpg"
+import { UserContext } from "./UserContext";
 
 const Intro = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirect, setRedirect] = useState(false);
-  // const {setUser} = useContext(UserContext);
+  const {setUser} = useContext(UserContext);
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
       const {data} = await axios.post('/login', {email,password});
-      // setUser(data);
+       setUser(data);//data.data is what is being pulled
+
       alert('Login successful');
       setRedirect(true);
     } catch (e) {
@@ -29,7 +31,7 @@ const Intro = () => {
   }
 
   if (redirect) {
-    return <Navigate to={'/register'} />
+    return <Navigate to={'/Dashboard'} />
   }
   
   return (
@@ -52,14 +54,20 @@ const Intro = () => {
                  onChange={ev => setPassword(ev.target.value)} />
           <input type="hidden" name="_action" value="newUser" />
           <button type="submit" className="btn btn--dark">
-            <span>Create Account</span>
-            <UserPlusIcon width={20} />
+            <span>Login</span>
           </button>
         </Form>
       </div>
-      <div >
-            Don't have an account yet? <Link to={'/register'}>Register now</Link>
+      <div className="intro">
+        <div>
+            <p>
+            Don't have an account yet? 
+            </p> 
+            <Link 
+            className="btn btn--dark"
+            to={'/register'}>Register now <UserPlusIcon width={20} /></Link>
           </div>
+        </div>
       <img src={illustration} alt="Person with money" width={600} />
     </div>
   )
