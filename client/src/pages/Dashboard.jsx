@@ -12,13 +12,14 @@ import BudgetItem from "../components/BudgetItem";
 import Table from "../components/Table";
 
 //  helper functions
-import { createBudget, createExpense, deleteItem, fetchData, waait } from "../helpers"
+import { createExpense, deleteItem, fetchData, waait } from "../helpers"
 import { UserContext } from "../components/UserContext";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 
 // loader
-export function dashboardLoader() {
+export async function dashboardLoader() {
   const userName = fetchData("userName");
   const budgets = fetchData("budgets");
   const expenses = fetchData("expenses");
@@ -83,7 +84,23 @@ export async function dashboardAction({ request }) {
 
 
 const Dashboard = () => {
-  const { userName, budgets, expenses } = useLoaderData()
+  const [exps, setExps] = useState([])
+  const [budgs, setBudgs] = useState([])
+
+  useEffect(()=> {
+    axios.get('/budgets').then(({data}) => {
+      setBudgs(data);
+    });
+  }, []);
+
+  useEffect(()=> {
+    axios.get('/expenses').then(({data}) => {
+      setExps(data);
+    });
+  }, []);
+
+
+  // const { budgets, expenses } = useLoaderData()
   const {ready,user,setUser} = useContext(UserContext);
   const [redirect,setRedirect] = useState(null);
 
@@ -119,33 +136,30 @@ const Dashboard = () => {
           </span></h1>
           <div className="grid-sm">
             {
-              budgets && budgets.length > 0
+              budgs && budgs.length > 0
                 ? (
                   <div className="grid-lg">
                     <div className="flex-lg">
                       <AddBudgetForm />
-                      <AddExpenseForm budgets={budgets} />
+                      <AddExpenseForm budgets={budgs} />
                     </div>
                     <h2>Existing Budgets</h2>
                     <div className="budgets">
                       {
-                        budgets.map((budget) => (
+                        budgs.map((budget) => (
                           <BudgetItem key={budget.id} budget={budget} />
                         ))
                       }
                     </div>
                     {
-                      expenses && expenses.length>0 && (
+                      exps && exps.length>0 && (
                      <div className="grid-md">
                       <h2>Recent Expenses</h2>
                       <Table 
-                      expenses={expenses
-                      .sort((a,b)=> 
-                      b.createdAt-a.createdAt
-                      )
+                      exps={exps
                       .slice(0,8)} 
                       />
-                      {expenses.length > 8 && (
+                      {exps.length > 8 && (
                         <Link
                         to="expenses"
                         className="btn btn--dark">

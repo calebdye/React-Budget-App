@@ -32,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Main />,
-    loader: mainLoader,
+     loader: mainLoader,
     errorElement: <Error />,
     children: [
       {
@@ -45,8 +45,8 @@ const router = createBrowserRouter([
       {
         path:"Dashboard",
         element: <Dashboard />,
-        loader: dashboardLoader,
-        action: dashboardAction,
+         loader: dashboardLoader,
+         action: dashboardAction,
         errorElement: <Error />
       },
       {
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
         path: "budget/:id",
         element: <BudgetPage />,
         loader: budgetLoader,
-        action: budgetAction,
+         action: budgetAction,
         errorElement: <Error />,
         children: [
           {

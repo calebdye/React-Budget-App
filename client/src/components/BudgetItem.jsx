@@ -8,26 +8,24 @@ import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 const BudgetItem = ({ budget, showDelete=false }) => {
-  const { id, name, amount, color } = budget;
-  const spent = calculateSpentByBudget(id);
+  const { _id, name, amount,} = budget;
+  const spent = calculateSpentByBudget(_id);
 
   return (
     <div
       className="budget"
-      style={{
-        "--accent": color
-      }}
+
     >
       <div className="progress-text">
         <h3>{name}</h3>
-        <p>{formatCurrency(amount)} Budgeted</p>
+        <p>{amount} Budgeted</p>
       </div>
       <progress max={amount} value={spent}>
-        {formatPercentage(spent / amount)}
+        {amount}
       </progress>
       <div className="progress-text">
-        <small>{formatCurrency(spent)} spent</small>
-        <small>{formatCurrency(amount - spent)} remaining</small>
+        {/* <small>{formatCurrency(spent)} spent</small> */}
+        <small>{amount} remaining</small>
       </div>
         {
           showDelete ? (
@@ -50,7 +48,7 @@ const BudgetItem = ({ budget, showDelete=false }) => {
           ) : (
             <div className="flex-sm">
                 <Link
-            to={`/budget/${id}`}
+            to={`/budget/${_id}`}
             className = "btn"
             >
             <span>View Details</span>

@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const User = require('./models/User.js');
+const Budget = require('./models/Budget.js');
+const Expense = require('./models/Expense.js');
 
 
 require('dotenv').config();
@@ -57,8 +59,6 @@ console.log(req.body)
 });
 
 app.post('/login', async (req,res) => {
-  console.log(req.body);
-  console.log(res)
   mongoose.connect(process.env.MONGO_URL);
   const {email,password} = req.body;
   const userDoc = await User.findOne({email});
@@ -80,6 +80,77 @@ app.post('/login', async (req,res) => {
     res.status(404).json('not found');
   }
 });
+
+
+//Create budget
+app.post('/budget', async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {newBudget,newBudgetAmount,user} = req.body;
+console.log(req.body)
+  try {
+    const budgetResponse = await Budget.create({
+      name: newBudget,
+      amount: newBudgetAmount, 
+      owner:user._id,
+    });
+    res.json(budgetResponse);
+  } catch (e) {
+    res.status(422).json(e);
+    console.log(e)
+  }
+
+});
+
+//Get budgets
+app.get('/budgets', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {_id} = userData
+      res.json(await Budget.find({owner:_id}));
+    });
+  } else {
+    res.json(null);
+  }
+});
+
+
+//Create expenses
+app.post('/expense', async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {newExpense,newExpenseAmount,user} = req.body;
+console.log(req.body)
+  try {
+    const expenseResponse = await Expense.create({
+      name: newExpense,
+      amount: newExpenseAmount, 
+      owner:user._id,//need to use budget id
+    });
+    res.json(expenseResponse);
+  } catch (e) {
+    res.status(422).json(e);
+    console.log(e)
+  }
+});
+
+//Get expenses
+app.get('/expenses', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  console.log(req.body)
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {_id} = userData
+      res.json(await Expense.find({owner:_id}));
+    });
+  } else {
+    res.json(null);
+  }
+});
+
 
 app.post('/api/logout', (req,res) => {
   res.cookie('token', '').json(true);

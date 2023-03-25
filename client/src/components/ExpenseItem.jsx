@@ -17,14 +17,14 @@ const ExpenseItem = ({expense, showBudget}) => {
   return (
     <>
     <td>{expense.name}</td>
-    <td>{formatCurrency(expense.amount)}</td>
-    <td>{formatDatetoLocaleString(expense.createdAt)}</td>
+    <td>{expense.amount}</td>
+    {/* <td>{expense.createdAt)}</td> */}
     
     { showBudget && (
     <td>
       
       <Link
-    to={`/budget/${budget.id}`}
+    to={`/budget/${budget._id}`}
     style={{"--accent": budget.color,
   }}
     >

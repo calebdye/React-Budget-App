@@ -1,11 +1,14 @@
 // react imports
-import { useEffect, useRef } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 
 // rrd imports
 import { useFetcher } from "react-router-dom"
 
 // library imports
 import { PlusCircleIcon } from "@heroicons/react/24/solid"
+import { UserContext } from "./UserContext"
+import axios from "axios"
+import { toast } from "react-toastify"
 
 const AddExpenseForm = ({ budgets }) => {
   const fetcher = useFetcher()
@@ -13,6 +16,33 @@ const AddExpenseForm = ({ budgets }) => {
 
   const formRef = useRef()
   const focusRef = useRef()
+
+  const [newExpense, setNewExpense] = useState('');
+  // const [budgs, setBudgs] = useState('');
+  const [newExpenseAmount, setNewExpenseAmount] = useState('');
+  const {ready,user,setUser} = useContext(UserContext);
+  async function handleLoginSubmit(ev) {
+    // ev.preventDefault();
+    try {
+       await axios.post('/expense', {newExpense,newExpenseAmount,budgets});
+       
+       toast.success('Expense Created')
+    } 
+    catch (e) {
+      // alert('Login failed');
+      console.log(e)
+    }
+  }
+
+
+  // useEffect(()=> {
+  //   axios.get('/budgets').then(({data}) => {
+  //     setBudgs(data);
+  //   });
+  // }, []);
+
+
+
 
   useEffect(() => {
     if (!isSubmitting) {
@@ -35,6 +65,7 @@ const AddExpenseForm = ({ budgets }) => {
         method="post"
         className="grid-sm"
         ref={formRef}
+        onSubmit={handleLoginSubmit}
       >
         <div className="expense-inputs">
           <div className="grid-xs">
@@ -45,6 +76,8 @@ const AddExpenseForm = ({ budgets }) => {
               id="newExpense"
               placeholder="e.g., Coffee"
               ref={focusRef}
+              value= {newExpense}
+              onChange={ev => setNewExpense(ev.target.value)}
               required
             />
           </div>
@@ -57,6 +90,8 @@ const AddExpenseForm = ({ budgets }) => {
               name="newExpenseAmount"
               id="newExpenseAmount"
               placeholder="e.g., 3.50"
+              value= {newExpenseAmount}
+              onChange={ev => setNewExpenseAmount(ev.target.value)}
               required
             />
           </div>
@@ -66,7 +101,6 @@ const AddExpenseForm = ({ budgets }) => {
           <select name="newExpenseBudget" id="newExpenseBudget" required>
             {
               budgets
-                .sort((a, b) => a.createdAt - b.createdAt)
                 .map((budget) => {
                   return (
                     <option key={budget.id} value={budget.id}>
@@ -77,7 +111,7 @@ const AddExpenseForm = ({ budgets }) => {
             }
           </select>
         </div>
-        <input type="hidden" name="_action" value="createExpense" />
+        {/* <input type="hidden" name="_action" value="createExpense" /> */}
         <button type="submit" className="btn btn--dark" disabled={isSubmitting}>
           {
             isSubmitting ? <span>Submitting…</span> : (
