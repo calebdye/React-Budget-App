@@ -14,13 +14,13 @@ const BudgetItem = ({ budget, showDelete=false }) => {
   return (
     <div
       className="budget"
-
+ 
     >
       <div className="progress-text">
         <h3>{name}</h3>
         <p>{amount} Budgeted</p>
       </div>
-      <progress max={amount} value={spent}>
+      <progress max={amount} value={spent} key={_id}>
         {amount}
       </progress>
       <div className="progress-text">

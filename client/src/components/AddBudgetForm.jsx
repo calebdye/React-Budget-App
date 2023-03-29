@@ -21,7 +21,7 @@ const AddBudgetForm = () => {
   const [newBudgetAmount, setNewBudgetAmount] = useState('');
   const {ready,user,setUser} = useContext(UserContext);
   async function handleLoginSubmit(ev) {
-    // ev.preventDefault();
+     ev.preventDefault();
     try {
        await axios.post('/budget', {newBudget,newBudgetAmount,user});
        

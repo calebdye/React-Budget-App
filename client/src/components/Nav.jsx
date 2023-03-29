@@ -6,8 +6,24 @@ import { TrashIcon } from '@heroicons/react/24/solid'
 
 // assets
 import logomark from "../assets/logomark.svg"
+import { useContext, useState } from "react";
+import { UserContext } from "./UserContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const Nav = ({ userName }) => {
+
+const Nav = ({ user }) => {
+  const [redirect,setRedirect] = useState(null);
+  const {ready,setUser} = useContext(UserContext);
+
+  async function logout(ev) {
+    ev.preventDefault();
+    await axios.post('/logout');
+    setRedirect('/');
+    setUser(null);
+    toast.success("You’ve logged out!")
+  }
+
   return (
     <nav>
       <NavLink
@@ -18,19 +34,14 @@ const Nav = ({ userName }) => {
         <span>HomeBudget</span>
       </NavLink>
       {
-        userName && (
+        user && (
           <Form
             method="post"
             action="logout"
-            onSubmit={(event) => {
-              if (!confirm("Delete user and all data?")) {
-                event.preventDefault()
-              }
-            }}
+            onSubmit={logout}
           >
             <button type="submit" className="btn btn--warning">
-              <span>Delete User</span>
-              <TrashIcon width={20} />
+              <span>Logout</span>
             </button>
 
           </Form>

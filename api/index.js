@@ -43,7 +43,6 @@ app.get('/api/test', (req,res) => {
 app.post('/register', async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {name,email,password} = req.body;
-console.log(req.body)
   try {
     const userDoc = await User.create({
       name,
@@ -105,11 +104,12 @@ console.log(req.body)
 app.get('/budgets', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {token} = req.cookies;
+  console.log(req.body)
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const {_id} = userData
-      res.json(await Budget.find({owner:_id}));
+      const {id} = userData
+      res.json(await Budget.find({owner:id}));
     });
   } else {
     res.json(null);
@@ -120,13 +120,14 @@ app.get('/budgets', (req,res) => {
 //Create expenses
 app.post('/expense', async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
-  const {newExpense,newExpenseAmount,user} = req.body;
-console.log(req.body)
+  const {newExpense,newExpenseAmount,newBudgetId,user} = req.body;
+ console.log(req.body)
   try {
     const expenseResponse = await Expense.create({
       name: newExpense,
       amount: newExpenseAmount, 
-      owner:user._id,//need to use budget id
+      budgetId:newBudgetId,//need to use budget id
+      owner:user._id,
     });
     res.json(expenseResponse);
   } catch (e) {
@@ -138,13 +139,13 @@ console.log(req.body)
 //Get expenses
 app.get('/expenses', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
-  console.log(req.body)
   const {token} = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
-      const {_id} = userData
-      res.json(await Expense.find({owner:_id}));
+      const {id} = userData
+
+      res.json(await Expense.find({owner:id}));
     });
   } else {
     res.json(null);
@@ -152,7 +153,7 @@ app.get('/expenses', (req,res) => {
 });
 
 
-app.post('/api/logout', (req,res) => {
+app.post('/logout', (req,res) => {
   res.cookie('token', '').json(true);
 });
 

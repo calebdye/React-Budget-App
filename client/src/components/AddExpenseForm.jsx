@@ -2,7 +2,7 @@
 import { useContext, useEffect, useRef, useState } from "react"
 
 // rrd imports
-import { useFetcher } from "react-router-dom"
+import { redirect, useFetcher } from "react-router-dom"
 
 // library imports
 import { PlusCircleIcon } from "@heroicons/react/24/solid"
@@ -18,29 +18,22 @@ const AddExpenseForm = ({ budgets }) => {
   const focusRef = useRef()
 
   const [newExpense, setNewExpense] = useState('');
-  // const [budgs, setBudgs] = useState('');
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
+  const [newBudgetId, setNewBudgetId] = useState('');
   const {ready,user,setUser} = useContext(UserContext);
   async function handleLoginSubmit(ev) {
-    // ev.preventDefault();
+    ev.preventDefault();
     try {
-       await axios.post('/expense', {newExpense,newExpenseAmount,budgets});
+       await axios.post('/expense', {newExpense,newExpenseAmount,newBudgetId,user});
        
        toast.success('Expense Created')
+ 
     } 
     catch (e) {
       // alert('Login failed');
       console.log(e)
     }
   }
-
-
-  // useEffect(()=> {
-  //   axios.get('/budgets').then(({data}) => {
-  //     setBudgs(data);
-  //   });
-  // }, []);
-
 
 
 
@@ -98,13 +91,16 @@ const AddExpenseForm = ({ budgets }) => {
         </div>
         <div className="grid-xs" hidden={budgets.length === 1}>
           <label htmlFor="newExpenseBudget">Budget Category</label>
-          <select name="newExpenseBudget" id="newExpenseBudget" required>
+          <select name="newExpenseBudget" id="newExpenseBudget" required
+          onChange={ev => setNewBudgetId(ev.target.value)}
+          >
+            <option value="" >Select Budget</option>
             {
               budgets
                 .map((budget) => {
                   return (
-                    <option key={budget.id} value={budget.id}>
-                      {budget.name}
+                    <option key={budget._id} value={budget._id}>
+                      {budget.name} 
                     </option>
                   )
                 })

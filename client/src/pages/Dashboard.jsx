@@ -19,19 +19,19 @@ import axios from "axios";
 
 
 // loader
-export async function dashboardLoader() {
-  const userName = fetchData("userName");
-  const budgets = fetchData("budgets");
-  const expenses = fetchData("expenses");
-  return { userName, budgets, expenses }
-}
+// export async function dashboardLoader() {
+//   const userName = fetchData("userName");
+//   const budgets = fetchData("budgets");
+//   const expenses = fetchData("expenses");
+//   return { userName, budgets, expenses }
+// }
 
 // action
-export async function dashboardAction({ request }) {
-  await waait();
+// export async function dashboardAction({ request }) {
+//   await waait();
 
-  const data = await request.formData();
-  const { _action, ...values } = Object.fromEntries(data)
+//   const data = await request.formData();
+//   const { _action, ...values } = Object.fromEntries(data)
 
   // new user submission
   // if (_action === "newUser") {
@@ -43,43 +43,43 @@ export async function dashboardAction({ request }) {
   //   }
   // }
 
-  if (_action === "createBudget") {
-    try {
-      createBudget({
-        name: values.newBudget,
-        amount: values.newBudgetAmount,
-      })
-      return toast.success("Budget created!")
-    } catch (e) {
-      throw new Error("There was a problem creating your budget.")
-    }
-  }
+  // if (_action === "createBudget") {
+  //   try {
+  //     createBudget({
+  //       name: values.newBudget,
+  //       amount: values.newBudgetAmount,
+  //     })
+  //     return toast.success("Budget created!")
+  //   } catch (e) {
+  //     throw new Error("There was a problem creating your budget.")
+  //   }
+  // }
 
-  if (_action === "createExpense") {
-    try {
-      createExpense({
-        name: values.newExpense,
-        amount: values.newExpenseAmount,
-        budgetId: values.newExpenseBudget
-      })
-      return toast.success(`Expense ${values.newExpense} created!`)
-    } catch (e) {
-      throw new Error("There was a problem creating your expense.")
-    }
-  }
+  // if (_action === "createExpense") {
+  //   try {
+  //     createExpense({
+  //       name: values.newExpense,
+  //       amount: values.newExpenseAmount,
+  //       budgetId: values.newExpenseBudget
+  //     })
+  //     return toast.success(`Expense ${values.newExpense} created!`)
+  //   } catch (e) {
+  //     throw new Error("There was a problem creating your expense.")
+  //   }
+  // }
 
-  if (_action === "deleteExpense") {
-    try {
-      deleteItem({
-        key: "expenses",
-        id: values.expenseId,
-      });
-      return toast.success(`Expense deleted!`)
-    } catch (e) {
-      throw new Error("There was a problem deleting your expense.")
-    }
-  }
-}
+//   if (_action === "deleteExpense") {
+//     try {
+//       deleteItem({
+//         key: "expenses",
+//         id: values.expenseId,
+//       });
+//       return toast.success(`Expense deleted!`)
+//     } catch (e) {
+//       throw new Error("There was a problem deleting your expense.")
+//     }
+//   }
+// }
 
 
 
@@ -103,13 +103,6 @@ const Dashboard = () => {
   // const { budgets, expenses } = useLoaderData()
   const {ready,user,setUser} = useContext(UserContext);
   const [redirect,setRedirect] = useState(null);
-
-  async function logout() {
-    await axios.post('/logout');
-    setRedirect('/');
-    setUser(null);
-  }
-  
 
   if (!ready) {
     return 'Loading...';
@@ -147,7 +140,7 @@ const Dashboard = () => {
                     <div className="budgets">
                       {
                         budgs.map((budget) => (
-                          <BudgetItem key={budget.id} budget={budget} />
+                          <BudgetItem key={budget._id} budget={budget} />
                         ))
                       }
                     </div>
@@ -156,7 +149,7 @@ const Dashboard = () => {
                      <div className="grid-md">
                       <h2>Recent Expenses</h2>
                       <Table 
-                      exps={exps
+                      expenses={exps
                       .slice(0,8)} 
                       />
                       {exps.length > 8 && (

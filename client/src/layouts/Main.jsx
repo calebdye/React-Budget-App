@@ -1,4 +1,5 @@
 // rrd imports
+import { useContext } from "react";
 import { Outlet, useLoaderData } from "react-router-dom";
 
 // assets
@@ -6,23 +7,25 @@ import wave from "../assets/wave.svg";
 
 // components
 import Nav from "../components/Nav";
+import { UserContext } from "../components/UserContext";
 
 
 //  helper functions
-import { fetchData } from "../helpers"
+//import { fetchData } from "../helpers"
 
 // loader
-export function mainLoader() {
-  const userName = fetchData("userName");
-  return { userName }
-}
+// export function mainLoader() {
+//   const userName = fetchData("userName");
+//   return { userName }
+// }
 
 const Main = () => {
-  const { userName } = useLoaderData()
+
+  const {ready,user,setUser} = useContext(UserContext);
 
   return (
     <div className="layout">
-      <Nav userName={userName} />
+      <Nav user={user} />
       <main>
         <Outlet />
       </main>

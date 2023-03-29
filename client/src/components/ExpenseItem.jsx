@@ -11,25 +11,27 @@ const ExpenseItem = ({expense, showBudget}) => {
   const fetcher = useFetcher();
   const budget = getAllMatchingItems({
     category: "budgets",
-    key: "id",
+    key: "_id",//not sure if needs _
     value: expense.budgetId
   })[0];
+
   return (
     <>
     <td>{expense.name}</td>
     <td>{expense.amount}</td>
+    <td>{expense.budgetId}</td>
     {/* <td>{expense.createdAt)}</td> */}
     
     { showBudget && (
     <td>
       
-      <Link
-    to={`/budget/${budget._id}`}
+      {/* <Link
+    to={`/budget/${budget.id}`}
     style={{"--accent": budget.color,
   }}
     >
       {budget.name}
-    </Link>
+    </Link> */}
     </td>
       )}
     <td>

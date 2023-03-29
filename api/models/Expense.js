@@ -5,7 +5,8 @@ const {Schema} = mongoose;
 const ExpenseSchema = new Schema({
   name: String,
   amount: Number,
-  budgetId: {type:mongoose.Schema.Types.ObjectId, ref:'Budget'},
+  budgetId: String,
+  owner: {type:mongoose.Schema.Types.ObjectId, ref:'User'},
 });
 
 const ExpenseModel = mongoose.model('Expense', ExpenseSchema);
