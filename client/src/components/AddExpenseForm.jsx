@@ -99,7 +99,7 @@ const AddExpenseForm = ({ budgets }) => {
               budgets
                 .map((budget) => {
                   return (
-                    <option key={budget._id} value={budget._id}>
+                    <option key={budget._id} value={budget.name}>
                       {budget.name} 
                     </option>
                   )

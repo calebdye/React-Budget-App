@@ -9,7 +9,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 
 const BudgetItem = ({ budget, showDelete=false }) => {
   const { _id, name, amount,} = budget;
-  const spent = calculateSpentByBudget(_id);
+  const spent = calculateSpentByBudget(name);//trying to pass name to use helper function to get all exps
 
   return (
     <div
