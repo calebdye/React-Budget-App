@@ -154,16 +154,16 @@ app.get('/expenses', (req,res) => {
 });
 
 //Delete expenses
-app.post('/deleteExpense', (req,res) => {
+app.delete('/deleteExpense', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
-  console.log(req.body)
-
+  
   const {token} = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       const {id} = userData
-      res.json(await Expense.find({owner:id}));
+      await Expense.findByIdAndDelete(req.body.id)
+      res.json('Deleted');
     });
   } else {
     res.json(null);

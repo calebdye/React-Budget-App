@@ -23,10 +23,10 @@ const ExpenseItem = ({expense, showBudget}) => {
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
-      console.log(deleteId)
-       await axios.post('/deleteExpense', expense._id);
+      console.log(expense._id)
+       await axios.delete('/deleteExpense', {data: {id: expense._id}});
        
-       toast.success('Expense Created')
+       toast.success('Expense Deleted')
  
     } 
     catch (e) {
@@ -63,7 +63,7 @@ const ExpenseItem = ({expense, showBudget}) => {
 
         <input type="hidden" name="expenseId"
         value={expense._id} 
-        onChange={ev => newDeleteId(expense._id)}
+        //onChange={ev => newDeleteId(expense._id)}
         />
         <button
         type="submit"
