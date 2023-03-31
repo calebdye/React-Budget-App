@@ -85,7 +85,7 @@ app.post('/login', async (req,res) => {
 app.post('/budget', async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {newBudget,newBudgetAmount,user} = req.body;
-console.log(req.body)
+
   try {
     const budgetResponse = await Budget.create({
       name: newBudget,
@@ -104,7 +104,7 @@ console.log(req.body)
 app.get('/budgets', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {token} = req.cookies;
-  console.log(req.body)
+
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
@@ -121,7 +121,7 @@ app.get('/budgets', (req,res) => {
 app.post('/expense', async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
   const {newExpense,newExpenseAmount,newBudgetId,user} = req.body;
- console.log(req.body)
+
   try {
     const expenseResponse = await Expense.create({
       name: newExpense,
@@ -139,6 +139,7 @@ app.post('/expense', async (req,res) => {
 //Get expenses
 app.get('/expenses', (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
+
   const {token} = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -151,6 +152,26 @@ app.get('/expenses', (req,res) => {
     res.json(null);
   }
 });
+
+//Delete expenses
+app.post('/deleteExpense', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  console.log(req.body)
+
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {id} = userData
+      res.json(await Expense.find({owner:id}));
+    });
+  } else {
+    res.json(null);
+  }
+});
+
+
+
 
 
 app.post('/logout', (req,res) => {

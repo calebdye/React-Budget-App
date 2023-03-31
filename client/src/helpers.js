@@ -1,3 +1,6 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 export const waait = () => new Promise(res => setTimeout(res, Math.random() * 2000))
 
 
@@ -75,6 +78,28 @@ export const calculateSpentByBudget = (budgetId) => {
   }, 0)
   return budgetSpent;
 }
+
+// total spent by budget
+export const  calculateSpentByBudgets = (budgetId) => {
+  const [exps, setExps] = useState([])
+
+  useEffect(()=> {
+    axios.get('/expenses').then(({data}) => {
+      setExps(data);
+      console.log(exps)
+    });
+  }, []);
+  const budgetSpent = exps.reduce((acc, expense) => {
+    // check if expense.id === budgetId I passed in
+    if (expense.budgetId !== budgetId) return acc
+
+    // add the current amount to my total
+    return acc += expense.amount
+  }, 0)
+  return budgetSpent;
+
+}
+
 
 
 // FORMATTING

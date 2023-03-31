@@ -6,6 +6,9 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 
 //rrd
 import { formatCurrency, formatDatetoLocaleString, getAllMatchingItems } from "../helpers"
+import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const ExpenseItem = ({expense, showBudget}) => {
   const fetcher = useFetcher();
@@ -15,11 +18,29 @@ const ExpenseItem = ({expense, showBudget}) => {
     value: expense.budgetId
   })[0];
 
+  const [deleteId, newDeleteId] = useState('');
+
+  async function handleLoginSubmit(ev) {
+    ev.preventDefault();
+    try {
+      console.log(deleteId)
+       await axios.post('/deleteExpense', expense._id);
+       
+       toast.success('Expense Created')
+ 
+    } 
+    catch (e) {
+      // alert('Login failed');
+      console.log(e)
+    }
+  }
+
   return (
     <>
     <td>{expense.name}</td>
     <td>{expense.amount}</td>
     <td>{expense.budgetId}</td>
+    <td>{expense._id}</td>
     {/* <td>{expense.createdAt)}</td> */}
     
     { showBudget && (
@@ -35,11 +56,15 @@ const ExpenseItem = ({expense, showBudget}) => {
     </td>
       )}
     <td>
-      <fetcher.Form method="post">
-        <input type="hidden" name="_action" 
-        value="deleteExpense" />
+    <fetcher.Form 
+    method="post"
+    onSubmit={handleLoginSubmit}
+    >
+
         <input type="hidden" name="expenseId"
-        value={expense.id} />
+        value={expense._id} 
+        onChange={ev => newDeleteId(expense._id)}
+        />
         <button
         type="submit"
         className="btn btn--warning"

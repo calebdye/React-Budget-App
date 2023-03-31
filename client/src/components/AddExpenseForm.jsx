@@ -21,6 +21,7 @@ const AddExpenseForm = ({ budgets }) => {
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
   const [newBudgetId, setNewBudgetId] = useState('');
   const {ready,user,setUser} = useContext(UserContext);
+  
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {

@@ -1,7 +1,7 @@
 //rrd
 import { Form, Link } from "react-router-dom";
 // helper functions
-import { calculateSpentByBudget, formatCurrency, formatPercentage } from "../helpers";
+import { calculateSpentByBudget, calculateSpentByBudgets, formatCurrency, formatPercentage } from "../helpers";
 
 //library import
 import { BanknotesIcon } from "@heroicons/react/24/outline";
@@ -9,7 +9,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 
 const BudgetItem = ({ budget, showDelete=false }) => {
   const { _id, name, amount,} = budget;
-  const spent = calculateSpentByBudget(name);//trying to pass name to use helper function to get all exps
+  const spent = calculateSpentByBudgets(name);//trying to pass name to use helper function to get all exps
 
   return (
     <div
@@ -18,14 +18,14 @@ const BudgetItem = ({ budget, showDelete=false }) => {
     >
       <div className="progress-text">
         <h3>{name}</h3>
-        <p>{amount} Budgeted</p>
+        <p>{formatCurrency(amount)} Budgeted</p>
       </div>
       <progress max={amount} value={spent} key={_id}>
-        {amount}
+      {formatPercentage(spent / amount)}
       </progress>
       <div className="progress-text">
-        {/* <small>{formatCurrency(spent)} spent</small> */}
-        <small>{amount} remaining</small>
+        <small>{formatCurrency(spent)} spent</small>
+        <small>{formatCurrency(amount - spent)} remaining</small>
       </div>
         {
           showDelete ? (
