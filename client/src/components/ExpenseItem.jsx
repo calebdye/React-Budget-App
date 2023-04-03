@@ -5,25 +5,32 @@ import { Link, useFetcher } from "react-router-dom";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
 //rrd
-import { formatCurrency, formatDatetoLocaleString, getAllMatchingItems } from "../helpers"
-import { useState } from "react";
+import { budgetData, formatCurrency, formatDatetoLocaleString, getAllMatchingItems } from "../helpers"
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 const ExpenseItem = ({expense, showBudget}) => {
   const fetcher = useFetcher();
-  const budget = getAllMatchingItems({
-    category: "budgets",
-    key: "_id",//not sure if needs _
-    value: expense.budgetId
-  })[0];
+  //const budget = budgetData(expense.budgetId)
+  //console.log(expense.budgetId)
+
+  //console.log(budget)
+  // const budget = getAllMatchingItems({
+  //   category: "budgets",
+  //   key: "_id",//not sure if needs _
+  //   value: expense.budgetId
+  // })[0];
+ 
+
+
 
   const [deleteId, newDeleteId] = useState('');
 
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
     try {
-      console.log(expense._id)
+      //console.log(expense._id)
        await axios.delete('/deleteExpense', {data: {id: expense._id}});
        
        toast.success('Expense Deleted')
@@ -46,13 +53,13 @@ const ExpenseItem = ({expense, showBudget}) => {
     { showBudget && (
     <td>
       
-      {/* <Link
-    to={`/budget/${budget.id}`}
-    style={{"--accent": budget.color,
-  }}
+      <Link
+    to={`/budget/${expense.budgetId}`}
+  //   style={{"--accent": budget.color,
+  // }}
     >
-      {budget.name}
-    </Link> */}
+      View Budget
+    </Link>
     </td>
       )}
     <td>

@@ -18,7 +18,7 @@ import deleteBudget from "./actions/deleteBudget";
 import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
 import ExpensesPage, { expensesAction, expensesLoader } from "./pages/ExpensesPage";
-import BudgetPage, { budgetAction, budgetLoader } from "./pages/BudgetPage";
+import BudgetPage from "./pages/BudgetPage";
 import RegisterPage from "./pages/Register";
 import axios from "axios";
 import Intro from "./components/Intro";

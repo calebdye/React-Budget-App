@@ -86,7 +86,7 @@ export const  calculateSpentByBudgets = (budgetId) => {
   useEffect(()=> {
     axios.get('/expenses').then(({data}) => {
       setExps(data);
-      console.log(exps)
+    //  console.log(exps)
     });
   }, []);
   const budgetSpent = exps.reduce((acc, expense) => {
@@ -121,4 +121,19 @@ export const formatCurrency = (amt) => {
     style: "currency",
     currency: "USD"
   })
+}
+
+
+
+
+export const budgetData = (budgetId) => {
+  
+const [budgs, setBudgs] = useState([])
+
+useEffect(()=> {
+  axios.get(`/budgets/${budgetId}`).then(({data}) => {
+    setBudgs(data);
+  });
+}, []);
+  return budgs
 }
