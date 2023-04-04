@@ -6,6 +6,7 @@ const ExpenseSchema = new Schema({
   name: String,
   amount: Number,
   budgetId: String,
+  budgetName: String,
   owner: {type:mongoose.Schema.Types.ObjectId, ref:'User'},
 });
 

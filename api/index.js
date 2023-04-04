@@ -120,13 +120,14 @@ app.get('/budgets', (req,res) => {
 //Create expenses
 app.post('/expense', async (req,res) => {
   mongoose.connect(process.env.MONGO_URL);
-  const {newExpense,newExpenseAmount,newBudgetId,user} = req.body;
-
+  const {newExpense,newExpenseAmount,newBudgetId,user,name,budgId,ifBudgetPage} = req.body;
+console.log(req.body)
   try {
     const expenseResponse = await Expense.create({
       name: newExpense,
       amount: newExpenseAmount, 
-      budgetId:newBudgetId,//need to use budget id
+      budgetId:budgId,//need to use budget id
+      budgetName:name || ifBudgetPage,
       owner:user._id,
     });
     res.json(expenseResponse);
@@ -190,6 +191,22 @@ app.get('/profile', (req,res) => {
   } else {
     res.json(null);
   }
+});
+
+
+app.get('/budgets/:id', async (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  const {id} = req.params;
+   res.json(await Budget.findById(id));
+  
+});
+
+app.get('/expenses/:id', async (req,res) => {
+ 
+  mongoose.connect(process.env.MONGO_URL);
+  const {id} = req.params;
+   res.json(await Expense.find({budgetId:id}));
+  
 });
 
 
