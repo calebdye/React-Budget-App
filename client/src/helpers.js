@@ -128,8 +128,9 @@ export const formatCurrency = (amt) => {
 
 export const budgetData = (budgetId) => {
   
-const [budgs, setBudgs] = useState([])
 
+
+  const [budgs, setBudgs] = useState([])
 useEffect(()=> {
   axios.get(`/budgets/${budgetId}`).then(({data}) => {
     setBudgs(data);

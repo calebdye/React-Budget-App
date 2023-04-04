@@ -27,7 +27,7 @@ const Nav = ({ user }) => {
   return (
     <nav>
       <NavLink
-        to="/"
+        to="/dashboard"
         aria-label="Go to home"
       >
         <img src={logomark} alt="" height={30} />

@@ -10,7 +10,7 @@ import { UserContext } from "./UserContext"
 import axios from "axios"
 import { toast } from "react-toastify"
 
-const AddExpenseForm = ({ budgets }) => {
+const AddExpenseForm = ({ budgets, ifBudgetPage }) => {
   const fetcher = useFetcher()
   const isSubmitting = fetcher.state === "submitting";
 
@@ -19,13 +19,16 @@ const AddExpenseForm = ({ budgets }) => {
 
   const [newExpense, setNewExpense] = useState('');
   const [newExpenseAmount, setNewExpenseAmount] = useState('');
-  const [newBudgetId, setNewBudgetId] = useState('');
+  const [newBudgetId, setNewBudgetId] = useState(budgets[0]._id);
   const {ready,user,setUser} = useContext(UserContext);
   
   async function handleLoginSubmit(ev) {
     ev.preventDefault();
+    const budg = (newBudgetId.split(','))
+    const name = budg[1]
+    const budgId= budg[0]
     try {
-       await axios.post('/expense', {newExpense,newExpenseAmount,newBudgetId,user});
+       await axios.post('/expense', {newExpense,newExpenseAmount,newBudgetId,user,name,budgId,ifBudgetPage});
        
        toast.success('Expense Created')
  
@@ -93,14 +96,15 @@ const AddExpenseForm = ({ budgets }) => {
         <div className="grid-xs" hidden={budgets.length === 1}>
           <label htmlFor="newExpenseBudget">Budget Category</label>
           <select name="newExpenseBudget" id="newExpenseBudget" required
+          
           onChange={ev => setNewBudgetId(ev.target.value)}
           >
-            <option value="" >Select Budget</option>
+            {/* <option value="" >Select Budget</option> */}
             {
               budgets
                 .map((budget) => {
                   return (
-                    <option key={budget._id} value={budget._id}>
+                    <option key={budget._id} value={[budget._id, budget.name]}>
                       {budget.name} 
                     </option>
                   )

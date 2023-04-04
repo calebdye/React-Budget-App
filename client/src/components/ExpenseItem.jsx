@@ -21,7 +21,7 @@ const ExpenseItem = ({expense, showBudget}) => {
   //   key: "_id",//not sure if needs _
   //   value: expense.budgetId
   // })[0];
- 
+
 
 
 
@@ -46,8 +46,8 @@ const ExpenseItem = ({expense, showBudget}) => {
     <>
     <td>{expense.name}</td>
     <td>{expense.amount}</td>
-    <td>{expense.budgetId}</td>
-    <td>{expense._id}</td>
+    <td>{expense.budgetName}</td>
+    {/* <td>{expense._id}</td> */}
     {/* <td>{expense.createdAt)}</td> */}
     
     { showBudget && (
