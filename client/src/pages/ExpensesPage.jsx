@@ -9,11 +9,16 @@ import Table from "../components/Table";
 
 //lbibrary
 import { toast } from "react-toastify";
+import axios from "axios";
 
 
 // loader
 export async function expensesLoader() {
-    const expenses = await fetchData("expenses");
+  
+    const expenses = 
+    await axios.get('/expenses').then(({data}) => {
+      return data;
+    });
     return {expenses }
   }
 
@@ -37,26 +42,28 @@ export async function expensesLoader() {
 
 const ExpensesPage = () => {
     const {expenses} = useLoaderData();
-  return (
-    <div className="grid-lg">
-        <h1>All Expenses</h1>
-        {
-            expenses && expenses.length > 0 ? (
-                <div className="gird-md">
-                    <h2>Recent Expenses <small>({expenses.length} total)</small>
-                    </h2>
-                    <Table expenses={expenses}>
 
-                    </Table>
-                </div>
-               
-            )
-            : <p>No Expenses to show</p>
-        }
-        
+      return (
+        <div className="grid-lg">
+            <h1>All Expenses</h1>
+            {
+                expenses && expenses.length > 0 ? (
+                    <div className="gird-md">
+                        <h2>Recent Expenses <small>({expenses.length} total)</small>
+                        </h2>
+                        <Table expenses={expenses}>
+    
+                        </Table>
+                    </div>
+                   
+                )
+                : <p>No Expenses to show</p>
+            }
+            
+    
+        </div>
+      )
+    } 
 
-    </div>
-  )
-}
 
 export default ExpensesPage

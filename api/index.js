@@ -172,6 +172,24 @@ app.delete('/deleteExpense', (req,res) => {
 });
 
 
+//Delete budget
+app.delete('/deleteBudget', (req,res) => {
+  mongoose.connect(process.env.MONGO_URL);
+  console.log(req)
+  const {token} = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const {id} = userData
+      await Budget.findByIdAndDelete(req.body.id)
+      res.json('Deleted');
+    });
+  } else {
+    res.json(null);
+  }
+});
+
+
 
 
 

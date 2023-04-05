@@ -52,7 +52,7 @@ const router = createBrowserRouter([
       {
         path: "expenses",
         element: <ExpensesPage />,
-        // loader: expensesLoader,
+        loader: expensesLoader,
         // action: expensesAction,
         errorElement: <Error />,
       },

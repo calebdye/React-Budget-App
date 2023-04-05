@@ -45,7 +45,7 @@ const ExpenseItem = ({expense, showBudget}) => {
   return (
     <>
     <td>{expense.name}</td>
-    <td>{expense.amount}</td>
+    <td>{formatCurrency(expense.amount)}</td>
     <td>{expense.budgetName}</td>
     {/* <td>{expense._id}</td> */}
     {/* <td>{expense.createdAt)}</td> */}
