@@ -25,6 +25,16 @@ import axios from "axios";
 //       value: params.id
 //   });
 
+// export async function expenserLoader() { //need to make this function and the budget get a loader function
+  
+//   const expenses = 
+//   await axios.get('/expenses').then(({data}) => {
+    
+//     return data;
+//   });
+//   return {expenses }
+// }
+
 //   if(!budget){
 //       throw new Error("The budget you are trying to find does not exist")
 //   }
@@ -130,7 +140,7 @@ import axios from "axios";
 
 
 const BudgetPage = () => {
-
+  
   const {id} = useParams();
   const [budget,setBudget] = useState(null);
   const [expenses,setExpense] = useState(null);

@@ -19,12 +19,17 @@ import axios from "axios";
 
 
 // loader
-// export async function dashboardLoader() {
-//   const userName = fetchData("userName");
-//   const budgets = fetchData("budgets");
-//   const expenses = fetchData("expenses");
-//   return { userName, budgets, expenses }
-// }
+export async function dashboardLoader() {
+  const userName = fetchData("userName");
+  const budgets = fetchData("budgets");
+  const exps = 
+  await axios.get('/expenses').then(({data}) => {
+    
+    return data;
+  });
+  return {exps };
+  return { userName, budgets, expenses }
+}
 
 // action
 // export async function dashboardAction({ request }) {
@@ -84,20 +89,21 @@ import axios from "axios";
 
 
 const Dashboard = () => {
-  const [exps, setExps] = useState([])
+  const {exps} = useLoaderData();
+ // const [exps, setExps] = useState([])
   const [budgs, setBudgs] = useState([])
-
+console.log(exps)
   useEffect(()=> {
     axios.get('/budgets').then(({data}) => {
       setBudgs(data);
     });
   }, []);
 
-  useEffect(()=> {
-    axios.get('/expenses').then(({data}) => {
-      setExps(data);
-    });
-  }, []);
+  // useEffect(()=> {
+  //   axios.get('/expenses').then(({data}) => {
+  //     setExps(data);
+  //   });
+  // }, []);
 
 
   // const { budgets, expenses } = useLoaderData()
@@ -154,7 +160,7 @@ const Dashboard = () => {
                       />
                       {exps.length > 8 && (
                         <Link
-                        to="expenses"
+                        to="/expenses"
                         className="btn btn--dark">
                           View all expenses
                         </Link>

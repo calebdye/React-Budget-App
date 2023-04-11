@@ -1,8 +1,10 @@
 //helper
-import { Link, useFetcher } from "react-router-dom";
+import { Link, renderMatches, useFetcher } from "react-router-dom";
 
 //library import
 import { TrashIcon } from "@heroicons/react/24/solid";
+
+import React from "react";
 
 //rrd
 import { budgetData, formatCurrency, formatDatetoLocaleString, getAllMatchingItems } from "../helpers"
@@ -28,11 +30,14 @@ const ExpenseItem = ({expense, showBudget}) => {
   const [deleteId, newDeleteId] = useState('');
 
   async function handleLoginSubmit(ev) {
+    
     ev.preventDefault();
     try {
       //console.log(expense._id)
        await axios.delete('/deleteExpense', {data: {id: expense._id}});
        
+        console.log('componentDidUpdate method is called');
+     
        toast.success('Expense Deleted')
  
     } 

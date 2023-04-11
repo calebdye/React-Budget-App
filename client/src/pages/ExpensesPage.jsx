@@ -10,6 +10,7 @@ import Table from "../components/Table";
 //lbibrary
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useState } from "react";
 
 
 // loader
@@ -17,10 +18,27 @@ export async function expensesLoader() {
   
     const expenses = 
     await axios.get('/expenses').then(({data}) => {
+      
       return data;
     });
     return {expenses }
   }
+
+
+  // loader
+// export  function expensesLoader() {
+//   const [data, setData] = useState({});
+
+//   useEffect(async ()=> {
+//     const expenses = await axios.get('/expenses')
+//        setData({expenses})
+//       // return response;
+   
+//   }, []);
+//   return {data }
+
+// }
+
 
   //action
   export async function expensesAction({request}) {
