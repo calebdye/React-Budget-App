@@ -37,7 +37,7 @@ const ExpenseItem = ({expense, showBudget}) => {
        await axios.delete('/deleteExpense', {data: {id: expense._id}});
        
         console.log('componentDidUpdate method is called');
-     
+        showBudget = false
        toast.success('Expense Deleted')
  
     } 
@@ -46,6 +46,10 @@ const ExpenseItem = ({expense, showBudget}) => {
       console.log(e)
     }
   }
+
+  // function removeExpense(expenseId){
+  //   onchange(...expense.filter(exp => exp !== expense._id))
+  // }
 
   return (
     <>
@@ -75,7 +79,7 @@ const ExpenseItem = ({expense, showBudget}) => {
 
         <input type="hidden" name="expenseId"
         value={expense._id} 
-        //onChange={ev => newDeleteId(expense._id)}
+        onClick={() => removeExpense(expense._id)}
         />
         <button
         type="submit"

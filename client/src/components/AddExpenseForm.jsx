@@ -31,7 +31,7 @@ const AddExpenseForm = ({ budgets, ifBudgetPage }) => {
        await axios.post('/expense', {newExpense,newExpenseAmount,newBudgetId,user,name,budgId,ifBudgetPage});
        
        toast.success('Expense Created')
- 
+       
     } 
     catch (e) {
       // alert('Login failed');

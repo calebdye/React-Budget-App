@@ -29,9 +29,10 @@ export async function expensesLoader() {
 // export  function expensesLoader() {
 //   const [data, setData] = useState({});
 
-//   useEffect(async ()=> {
-//     const expenses = await axios.get('/expenses')
-//        setData({expenses})
+//   useEffect( ()=> {
+//     const expenses = axios.get('/expenses').then(expenses)
+//        console.log({expenses})
+//     //setData({expenses})
 //       // return response;
    
 //   }, []);
