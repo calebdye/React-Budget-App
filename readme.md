@@ -11,7 +11,7 @@ Basic Budget App web application that allows for multiple budgets. Users can app
 Components not reacting to changes
 Mobile view formatting 
 
-![alt tag](https://giphy.com/embed/YabmiW9PfcAeNY5F8U)
+![alt tag](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTczNThhYjBhNWE0NDJiNjA3YzI2NzIzMjM1MGFlMzhlZGE1ODM5NSZjdD1n/YabmiW9PfcAeNY5F8U/giphy.gif)
 
 
 
