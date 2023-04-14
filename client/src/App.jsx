@@ -24,7 +24,8 @@ import axios from "axios";
 import Intro from "./components/Intro";
 import { UserContextProvider } from "./components/UserContext";
 
-axios.defaults.baseURL = "http://127.0.0.1:4000"
+// axios.defaults.baseURL = "http://127.0.0.1:4000"
+axios.defaults.baseURL = process.env.CYCLIC_URL
 axios.defaults.withCredentials = true;
 
 
