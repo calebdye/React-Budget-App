@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: 'http://127.0.0.1:5173',
+  origin: 'http://127.0.0.1:8080',
 }));
 
 
@@ -227,4 +227,4 @@ app.get('/expenses/:id', async (req,res) => {
   
 });
 
-app.listen(4000);
+app.listen(process.env.PORT||3000);
